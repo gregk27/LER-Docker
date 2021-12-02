@@ -18,8 +18,8 @@ RUN apt-get -y install gradle
 
 FROM base
 #Migrate files in local dir
-COPY . /frc
-COPY ./git-hooks/* /frc/git-hooks
+COPY ./deploy /frc
+COPY ./deploy/git-hooks/* /frc/git-hooks
 RUN chmod +x /frc/git-hooks/*
 
 RUN git config --global user.name "LER-Programming"
