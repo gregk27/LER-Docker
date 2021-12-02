@@ -1,6 +1,12 @@
 FROM docker/dev-environments-java AS base
 
-RUN curl -SL https://github.com/wpilibsuite/roborio-toolchain/releases/download/v2022-1/FRC-2022-Linux-Toolchain-7.3.0.tar.gz | \
+ARG YEAR
+ARG WPI_VERSION
+
+ENV wpi_year=$YEAR
+ENV wpi_version=$WPI_VERSION
+
+RUN curl -SL "https://github.com/wpilibsuite/roborio-toolchain/releases/download/v$wpi_year-$wpi_version/FRC-$wpi_year-Linux-Toolchain-7.3.0.tar.gz" | \
     sh -c 'mkdir -p /usr/local && cd /usr/local && tar xzf - --strip-components=2'
 
 #Install vim
