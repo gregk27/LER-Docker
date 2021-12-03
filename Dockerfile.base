@@ -8,10 +8,9 @@ RUN apt-get -y install default-jdk
 RUN apt-get -y install gradle
 
 #Migrate files in local dir
-COPY ./deploy /frc
+COPY ./deploy /ler
 COPY ./deploy/git-hooks/* /ler/git-hooks
 RUN chmod +x /ler/git-hooks/*
-RUN chomd +x /ler/git-setup.sh
 
 # Setup git for team use
-RUN /ler/git-setup.sh
+RUN sh /ler/git-setup.sh
