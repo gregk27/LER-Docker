@@ -19,7 +19,7 @@ do
     users+=($col1)
     unames+=($col2)
     emails+=($col3)
-done < /frc/users.csv
+done < /ler/users.csv
 
 # Get the name of previous commit author
 prevName=$(git log --format='%an' HEAD~1 -1)

@@ -9,9 +9,9 @@ RUN apt-get -y install gradle
 
 #Migrate files in local dir
 COPY ./deploy /frc
-COPY ./deploy/git-hooks/* /frc/git-hooks
-RUN chmod +x /frc/git-hooks/*
+COPY ./deploy/git-hooks/* /ler/git-hooks
+RUN chmod +x /ler/git-hooks/*
+RUN chomd +x /ler/git-setup.sh
 
-RUN git config --global user.name "LER-Programming"
-RUN git config --global user.email "github.lakeeffectrobotics@gmail.com"
-RUN git config --global core.hooksPath /frc/git-hooks
+# Setup git for team use
+RUN /ler/git-setup.sh
