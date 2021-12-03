@@ -11,12 +11,21 @@ function build {
 
 years=()
 wpiVersions=()
-#Read version configuration
-while IFS=',' read -r col1 col2
-do
-    years+=($col1)
-    wpiVersions+=($col2)
-done < ./versions.csv
+if [ -z "$1" ] && [ -z "$2" ]; then
+    #Read version configuration
+    while IFS=',' read -r col1 col2
+    do
+        years+=($col1)
+        wpiVersions+=($col2)
+    done < ./versions.csv
+else
+    if [ -z "$2" ]; then 
+        echo "Must specify year and newest WPI Version"
+        exit 1
+    fi
+    years+=($1)
+    wpiVersions+=($2)
+fi
 
 i=0
 for year in ${years[@]}; do
