@@ -4,9 +4,9 @@ This repository the docker image to be used for programming on FRC team 2708, La
 The image is [available on Docker Hub](https://hub.docker.com/repository/docker/gregk27/ler-programming/general). Tags are provided for all WPILib verions since 2020. Tags with only a year will use the most recent version for that year.
 
 ## Image
-The image is built from the `docker/dev-environments-java` image for compatibility with docker development evironments. Vim, JDK-11, and Gradle are also included. Any files placed in the deploy folder will be placed in `/frc/` when building.
+The image is built from the `docker/dev-environments-java` image for compatibility with docker development evironments. Vim, JDK-11, and Gradle are also included. Any files placed in the deploy folder will be placed in `/ler/` when building.
 
-Git is configured with the generic team user. This is overrident by docker dev environments, so `/frc/git-setup.sh` should be run when first creating the container in this case.
+Git is configured with the generic team user. This is overrident by docker dev environments, so `/ler/git-setup.sh` should be run when first creating the container in this case.
 
 ## Post-Commit Hook
 

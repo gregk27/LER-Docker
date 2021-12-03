@@ -9,9 +9,9 @@ RUN apt-get -y install gradle
 
 #Migrate files in local dir
 COPY ./deploy /frc
-COPY ./deploy/git-hooks/* /frc/git-hooks
-RUN chmod +x /frc/git-hooks/*
-RUN chomd +x /frc/git-setup.sh
+COPY ./deploy/git-hooks/* /ler/git-hooks
+RUN chmod +x /ler/git-hooks/*
+RUN chomd +x /ler/git-setup.sh
 
 # Setup git for team use
-RUN /frc/git-setup.sh
+RUN /ler/git-setup.sh
