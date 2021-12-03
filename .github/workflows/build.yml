@@ -1,7 +1,9 @@
 name: Build
 
 on: 
-  push
+  push:
+    branches:
+      - "master"
 
 jobs:
   # Build the base image to be reused by version-specific images
