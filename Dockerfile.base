@@ -11,7 +11,7 @@ RUN apt-get -y install gradle
 COPY ./deploy /frc
 COPY ./deploy/git-hooks/* /frc/git-hooks
 RUN chmod +x /frc/git-hooks/*
+RUN chomd +x /frc/git-setup.sh
 
-RUN git config --global user.name "LER-Programming"
-RUN git config --global user.email "github.lakeeffectrobotics@gmail.com"
-RUN git config --global core.hooksPath /frc/git-hooks
+# Setup git for team use
+RUN /frc/git-setup.sh

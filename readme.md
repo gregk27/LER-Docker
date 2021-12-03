@@ -6,7 +6,7 @@ The image is [available on Docker Hub](https://hub.docker.com/repository/docker/
 ## Image
 The image is built from the `docker/dev-environments-java` image for compatibility with docker development evironments. Vim, JDK-11, and Gradle are also included. Any files placed in the deploy folder will be placed in `/frc/` when building.
 
-Git is configured with the generic team user.
+Git is configured with the generic team user. This is overrident by docker dev environments, so `/frc/git-setup.sh` should be run when first creating the container in this case.
 
 ## Post-Commit Hook
 
