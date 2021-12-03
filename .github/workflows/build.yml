@@ -4,56 +4,62 @@ on:
   push
 
 jobs:
-  # Build the base image to be reused by version-specific images
-  build-base:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-      - name: Login to DockerHub
-        uses: docker/login-action@v1 
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: gregk27/ler-base:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-      - # Temp fix
-        # https://github.com/docker/build-push-action/issues/252
-        # https://github.com/moby/buildkit/issues/1896
-        name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+  # # Build the base image to be reused by version-specific images
+  # build-base:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+  #     - name: Setup buildx
+  #       uses: docker/setup-buildx-action@v1
+  #     - name: Cache Docker layers
+  #       uses: actions/cache@v2
+  #       with:
+  #         path: /tmp/.buildx-cache
+  #         key: ${{ runner.os }}-buildx-${{ github.sha }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-buildx-
+  #     - name: Login to DockerHub
+  #       uses: docker/login-action@v1 
+  #       with:
+  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
+  #     - name: Build and push
+  #       uses: docker/build-push-action@v2
+  #       with:
+  #         context: .
+  #         push: true
+  #         tags: gregk27/ler-base:latest
+  #         cache-from: type=local,src=/tmp/.buildx-cache
+  #         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+  #     - # Temp fix
+  #       # https://github.com/docker/build-push-action/issues/252
+  #       # https://github.com/moby/buildkit/issues/1896
+  #       name: Move cache
+  #       run: |
+  #         rm -rf /tmp/.buildx-cache
+  #         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+  
   # Prepare the version matrix from versions.csv
   prepare-matrix:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.build.outputs.json }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Build Matrix
-        run: . ./buildMatrix.sh
-      - name: Set output
-        run: echo "::set-output name=matrix::$json
+        id: build
+        run: . ./buildMatrix.sh && echo "$json" && echo "::set-output name=json::$json"
+  
   # Build all the specified images
   build-all:
     runs-on: ubuntu-latest
-    needs:
-      - build-base
-      - prepare-matrix
+    needs: prepare-matrix
     strategy:
       matrix: ${{fromJson(needs.prepare-matrix.outputs.matrix)}}
     steps:
-      run: echo ${{matrix.year}} ${{matrix.version}} ${{matrix.tag}}
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Debug
+        run: echo ${{matrix.year}} ${{matrix.version}} ${{matrix.tag}}
